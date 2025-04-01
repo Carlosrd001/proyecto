@@ -1,0 +1,13 @@
+{
+  "name": "proyecto",
+  "version": "1.0.0",
+  "description": "Proyecto con Electron y SQLite",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^35.1.2",
+    "sqlite3": "^5.1.7"
+  }
+}
