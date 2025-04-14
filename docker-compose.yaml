@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  electron:
+    build: .
+    ports:
+      - "6901:6901"  # VNC vía navegador (http://localhost:6901)
+      - "5901:5901"  # VNC vía cliente VNC
+    volumes:
+      - .:/home/electron-app

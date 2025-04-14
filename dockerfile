@@ -1,23 +1,27 @@
-# Imagen base oficial de Node.js
-FROM node:18
+# Usar la imagen base de Ubuntu con XFCE y VNC
+FROM consol/ubuntu-xfce-vnc:latest
 
-# Establece el directorio de trabajo en el contenedor
+# Establecer variables de entorno para evitar interacciones durante la instalación
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Instalar curl, nodejs, sqlite3 y otros paquetes necesarios
+RUN apt-get update && \
+    apt-get install -y curl gnupg2 lsb-release sqlite3 sudo && \
+    curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
+
+# Establecer directorio de trabajo
 WORKDIR /app
 
-# Copia los archivos de dependencias
-COPY package*.json ./
+# Copiar los archivos del proyecto
+COPY . /app
 
-# Instala las dependencias de producción
-RUN npm install --production
+# Instalar las dependencias de Node.js
+RUN npm install
 
-# Copia el resto de tu código al contenedor
-COPY . .
-
-# Establece las variables de entorno necesarias (opcional)
-ENV NODE_ENV=production
-
-# Expone el puerto que utiliza tu aplicación
+# Exponer el puerto para Electron (si es necesario)
 EXPOSE 3000
 
-# Comando para iniciar tu aplicación
-CMD ["node", "app.js"]
+# Ejecutar la aplicación
+CMD ["npm", "start"]
